@@ -1,0 +1,22 @@
+//	getputs Tips
+
+getputs Tip: Click on any Tag to find more news related to that Tag.
+Did you Know: getputs automatically extracts relevant tags from the news items you submit. Wow! No more manual tagging!
+getputs Tip: Login and go to "My Account" to personalize your news reading experience.
+Tip of the Day: getputs uses a proprietary algorithm that ranks news using multiple factors like User Ratings, Freshness, Popularity, Credibility, Content Relevancy.
+Tip of the Day: When you post a story or a news item that you like, getputs automatically extracts relevant images for that story.
+Did you Know: The name getputs comes from the legendary computer science functions: "get" meaning get information and "put" meaning put information!
+Tip of the Day: Login to Post a question that you want the getputs Community to Answer.
+Upcoming Feature: The getputs Team is working hard to bring Real Time E-Mail Alerting to getputs.
+Upcoming Feature: Stay tuned for a very awesome News Recommendation Engine that would recommend you content based on what you read/discuss/share/rate.
+getputs Tip: If you like an article that you read, and you want to share it with your friend(s), click on the E-Mail link that is provided for that article.
+Tip of the Day: Click on any of the "Layout" or "Theme" Icons provided at the Top Right corner of this Page to change your interface. Cool! Ain't It?
+getputs Tip: Loved something you read on getputs? Want to "save" and store it for research or for future reference? Just login and click on "save".
+getputs Tip: Login and go to "My Account" to access the news/articles that you have previously submitted, rated, or saved.
+getputs Tip: To read the latest news, click on the "New" link. To read the most popular news, click on the "Hot" link.
+Help us build the best news recommendation engine in this universe! Start by rating the news you loved.
+getputs Tip: Set <a style="color:inherit;" href='http://www.getputs.com/RandomNews.aspx' >getputs.com/RandomNews.aspx</a> as your homepage and read new stuff everytime you open your web browser. Sweet!
+Follow getputs on Twitter <a style="color:inherit;" href='http://www.twitter.com/getputs'>www.twitter.com/getputs</a>
+Become a Fan! <a style="color:inherit;" href='http://www.facebook.com/pages/getputs/78011860307'>Follow getputs on Facebook.</a>
+Click on the 'Submit a Link' Button to Post News/Classifieds/Questions.
+Subscribe to the <a style="color:inherit;" href='http://www.getputs.com/RssPage.aspx'>getputs RSS Feed </a> to get the latest/hottest news.

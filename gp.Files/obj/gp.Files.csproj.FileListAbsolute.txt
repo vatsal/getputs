@@ -1,0 +1,10 @@
+C:\Inetpub\wwwroot\getputs\gp.Files\bin\Debug\gp.Files.dll
+C:\Inetpub\wwwroot\getputs\gp.Files\bin\Debug\gp.Files.pdb
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Debug\ResolveAssemblyReference.cache
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Debug\gp.Files.dll
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Debug\gp.Files.pdb
+C:\Inetpub\wwwroot\getputs\gp.Files\bin\Release\gp.Files.dll
+C:\Inetpub\wwwroot\getputs\gp.Files\bin\Release\gp.Files.pdb
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Release\ResolveAssemblyReference.cache
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Release\gp.Files.dll
+C:\Inetpub\wwwroot\getputs\gp.Files\obj\Release\gp.Files.pdb

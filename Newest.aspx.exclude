@@ -1,0 +1,7 @@
+<%@ Page Language="C#" MasterPageFile="~/getputs_A.master" AutoEventWireup="true" CodeFile="Newest.aspx.cs" Inherits="Newest" Title="getputs - Newest" %>
+<asp:Content ID="Main" ContentPlaceHolderID="Main" Runat="Server">
+    <div id="ItemDiv" runat="server">
+    
+    </div>
+</asp:Content>
+

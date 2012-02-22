@@ -1,0 +1,6 @@
+//	List of IPs that should not be allowed to Post or Comment. Also, do not consider them when counting clicks.
+//	Include Search Engine Robot IP's if you do not want to count the clicks from Search Engines.
+//	Vatsal Shah | 2009-05-09 | I think a Search Robot from Google has the IP: 66.249.67.218
+
+66.249.67.218
+

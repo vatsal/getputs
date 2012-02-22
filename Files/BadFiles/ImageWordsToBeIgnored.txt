@@ -1,0 +1,22 @@
+//	If any word from this list occurs inside an image URL (i.e. the image source), Then ignore the image.
+
+rss
+feed
+feeds
+icon
+icons
+/ads/
+/ad/
+error
+exception
+ad.doubleclick.net
+doubleclick.net
+quantserve.com
+statcounter.com
+reddit
+digg
+mixx
+ad-network
+banner
+rcm.amazon.com
+rcm-images.amazon.com

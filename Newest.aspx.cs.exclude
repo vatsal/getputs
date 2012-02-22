@@ -1,0 +1,565 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using MySql.Data.MySqlClient;
+using System.Collections.Generic;
+using System.Text;
+using System.Collections.Specialized;
+using System.Net;
+
+//  The Table getputs.item has the following schema:
+//  getputs.item [IID, Title, Link, Text, Date, UID, NComments, Category, Clicks, UpVotes, DownVotes, Spam]
+
+//  The Table getputs.user has the following schema:
+//  getputs.item [UID, Password, Date, EMail, About, Admin, Points]
+
+public partial class Newest : System.Web.UI.Page
+{
+    DBOperations dbOps;
+    Links links;
+    General general;
+    GUIVariables gui;
+    Categories categories;
+    ProcessingEngine engine;
+    ImageEngine imageEngine;
+    
+
+    string dateFormatString = ConfigurationManager.AppSettings["dateFormatString"];
+
+    string UID = string.Empty;
+    string seperator = " | ";
+
+    int startItem = 0;  //  Default Value;
+    ProcessingEngine.Sort sort = ProcessingEngine.Sort.New;
+
+    private static int itemClicks = 0;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        dbOps = DBOperations.Instance;
+        links = Links.Instance;
+        general = General.Instance;
+        gui = GUIVariables.Instance;
+        categories = Categories.Instance;
+        engine = ProcessingEngine.Instance;
+        imageEngine = ImageEngine.Instance;
+
+        seperator = gui.Seperator;
+        
+        if (!string.IsNullOrEmpty(Request.QueryString["startItem"]))
+        {
+            bool isStartItemInt = int.TryParse(Request.QueryString["startItem"].Trim(), out startItem);
+            if (!isStartItemInt)
+            {
+                startItem = 0;
+            }
+
+            if (startItem < 0)
+            {
+                startItem = 0;
+            }
+        }
+        else
+        {
+            startItem = 0;
+        }
+
+
+        if (!string.IsNullOrEmpty(Request.QueryString["sort"]))
+        {
+            string sortStr = Convert.ToString(Request.QueryString["sort"]);
+            sort = engine.GetSortType(sortStr);
+        }
+
+
+        #region CookieAlreadyExists
+        //  START: If a getputsCookie with the Username already exists, do not show the Login Page.
+
+        if (Request.Cookies["getputsCookie"] != null)
+        {
+            HttpCookie getputsCookie = Request.Cookies["getputsCookie"];
+            UID = dbOps.Decrypt(getputsCookie["UID"].ToString().Trim());
+        }
+        if (string.IsNullOrEmpty(UID))
+        {
+
+        }
+        else
+        {
+
+        }
+        //  END: If a getputsCookie with the Username already exists, do not show the Login Page.
+        #endregion CookieAlreadyExists
+
+        List<Item> itemList = engine.LoadItemDB(sort);
+        LoadItemTable(itemList);
+
+        
+    }
+
+    //  The Table getputs.item has the following schema:
+    //  getputs.item [IID, Title, Link, Text, Date, UID, NComments, Category, Clicks, UpVotes, DownVotes, Spam]
+
+    //  The Table getputs.user has the following schema:
+    //  getputs.item [UID, Password, Date, EMail, About, Admin, Points]
+
+
+    //private void LoadItemDB()
+    //{
+    //    List<Item> itemList = new List<Item>();
+
+
+    //    //  select * from item order by DATE_FORMAT(date, '%Y-%m-%d %k:%i:%S') desc;
+    //    //  string queryString = "SELECT IID, Title, Link, Text, Date, UID, NComments, Category FROM getputs.item WHERE Spam = 0 ORDER BY Date DESC";
+    //    string queryString = "SELECT IID, Title, Link, Text, Date, UID, NComments, Category, Clicks FROM getputs.item WHERE Spam = 0 ORDER BY DATE_FORMAT(Date, '%Y-%m-%d %k:%i:%S') DESC LIMIT " + engine.MaxItems.ToString() + ";";
+    //    MySqlDataReader retList;
+
+    //    retList = dbOps.ExecuteReader(queryString);
+
+    //    if (retList != null && retList.HasRows)
+    //        while (retList.Read())
+    //        {
+    //            Item item = new Item();
+    //            item.IID = Convert.ToInt32(retList["IID"]);
+    //            item.Title = Convert.ToString(retList["Title"]);
+    //            item.Link = Convert.ToString(retList["Link"]);
+    //            item.Text = Convert.ToString(retList["Text"]);
+    //            item.Date = Convert.ToString(retList["Date"]);
+    //            item.UID = Convert.ToString(retList["UID"]);
+    //            item.NComments = Convert.ToInt32(retList["NComments"]);
+    //            item.Category = Convert.ToString(retList["Category"]);
+    //            item.Clicks = Convert.ToInt32(retList["Clicks"]);
+
+    //            item.Age = item.GetAge(item.Date);
+    //            item.Marks = item.GetMarks(item.Clicks, item.NComments, item.Age);
+
+
+    //            if (!string.IsNullOrEmpty(item.Link))
+    //            {
+    //                item.Text = string.Empty;
+    //            }
+
+    //            itemList.Add(item);
+    //        }
+    //    retList.Close();
+
+    //    //  ItemDiv.InnerHtml = LoadItems(itemList);
+    //    LoadItemTable(itemList);
+
+    //}
+
+    private void LoadItemTable(List<Item> itemList)
+    {
+        string commentString = "discuss";
+
+        List<int> savedItems = null;
+        List<int> ratedItems = null;
+        if (!string.IsNullOrEmpty(UID))
+        {
+            //  Get the list of items that have been saved by the User only if the User is logged in.
+            savedItems = general.GetSavedItemIID(UID);
+            ratedItems = general.GetRatedItemsIID(UID);
+        }
+
+        //  for (int i = 0; i < itemList.Count; i++)
+        for (int i = startItem; i < itemList.Count && i < startItem + engine.ItemsPerPage; i++)
+        {
+            commentString = "discuss";
+
+            Item item = itemList[i];
+
+            if (!string.IsNullOrEmpty(item.Link))
+            {
+                LinkButton linkItemLB = new LinkButton();
+                linkItemLB.Click += new EventHandler(linkItemLB_Click);
+                
+                
+                linkItemLB.Text = item.Title;
+                //  linkItemLB.ID = item.IID.ToString();
+                linkItemLB.Attributes.Add("IID", item.IID.ToString());
+                linkItemLB.Attributes.Add("link", item.Link);
+
+                linkItemLB.CssClass = "CSS_LinkItem";
+
+                ItemDiv.Controls.Add(linkItemLB);
+
+                Uri uri = new Uri(item.Link);
+                string website = uri.Host;
+
+                //HttpWebRequest webreq = (HttpWebRequest)WebRequest.Create(item.Link);
+                //string website = webreq.RequestUri.Host; 
+
+                Label websiteLabel = new Label();
+                websiteLabel.Text = "  " + "[" + website + "]";
+                websiteLabel.CssClass = "CSS_ItemDomain";
+                
+                ItemDiv.Controls.Add(websiteLabel);
+
+            }
+            else
+            {                
+                LinkButton textItemLB = new LinkButton();
+                textItemLB.Click += new EventHandler(textItemLB_Click);
+                
+                textItemLB.Text = item.Title;                
+                //  textItemLB.ID = item.IID.ToString();
+                textItemLB.Attributes.Add("IID", item.IID.ToString());
+
+                textItemLB.CssClass = "CSS_TextItem";
+             
+                ItemDiv.Controls.Add(textItemLB);
+            }
+
+            ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak));
+
+            LinkButton userLB = new LinkButton();
+            userLB.Click += new EventHandler(userLB_Click);
+            userLB.Text = item.UID;
+            userLB.CssClass = "CSS_Submitter";
+            
+            ItemDiv.Controls.Add(userLB);
+
+            ItemDiv.Controls.Add(new LiteralControl(seperator));
+
+            string dateFormatString = gui.SmallFontStart + gui.GrayFontStart + general.GetFormattedDate(item.Date) + gui.GrayFontEnd + gui.SmallFontEnd;
+            Label dateLabel = new Label();
+            dateLabel.Text = dateFormatString;
+            dateLabel.CssClass = "CSS_SubmissionFreshness";
+            
+            ItemDiv.Controls.Add(dateLabel);
+
+            ItemDiv.Controls.Add(new LiteralControl(seperator));
+
+            if (!string.IsNullOrEmpty(item.Category))
+            {
+                if (imageEngine.IsIconsOn)
+                {
+                    string iconLocation = imageEngine.LoadIconLocation(item.Category);
+                    if (!string.IsNullOrEmpty(iconLocation))
+                    {
+                        System.Web.UI.WebControls.Image icon = new System.Web.UI.WebControls.Image();
+                        //  icon.ImageUrl = links.DomainLink + iconLocation;
+                        icon.ImageUrl = iconLocation;
+                        icon.ImageAlign = ImageAlign.AbsMiddle;
+                        icon.ToolTip = item.Category;
+                        ItemDiv.Controls.Add(icon);
+                        ItemDiv.Controls.Add(new LiteralControl(" "));
+                    }
+                }     
+
+                LinkButton categoryLB = new LinkButton();
+                categoryLB.Click += new EventHandler(categoryLB_Click);
+                categoryLB.Text = item.Category;
+                categoryLB.CssClass = "CSS_Category";
+                
+                categoryLB.Attributes.Add("category", item.Category);
+
+                ItemDiv.Controls.Add(categoryLB);
+
+                ItemDiv.Controls.Add(new LiteralControl(seperator));
+            }
+
+            if (!string.IsNullOrEmpty(UID)) //  Show the Saved link only if the User is logged in.
+            {
+                //  List<int> savedItems = general.GetSavedItemIID(UID);
+
+                LinkButton saveLB = new LinkButton();
+                saveLB.Click += new EventHandler(saveLB_Click);
+                saveLB.Text = "save";
+                saveLB.CssClass = "CSS_Save";
+                
+                saveLB.Attributes.Add("IID", item.IID.ToString());
+
+                if (savedItems != null && savedItems.Count > 0)
+                {
+                    if (savedItems.Contains(item.IID))
+                    {
+                        //  Do not show the Save Link.
+                    }
+                    else
+                    {
+                        //  Show the Save Link.
+                        ItemDiv.Controls.Add(saveLB);
+                        ItemDiv.Controls.Add(new LiteralControl(seperator));
+                    }
+                }
+                else
+                {
+                    //  Show the Save Link.
+                    ItemDiv.Controls.Add(saveLB);
+                    ItemDiv.Controls.Add(new LiteralControl(seperator));
+                }
+
+            }
+
+
+            if (engine.IsEMailOn)
+            {
+                string emailIconLocation = imageEngine.LoadStaticIconLocation("EMail");
+                if (!string.IsNullOrEmpty(emailIconLocation))
+                {
+                    System.Web.UI.WebControls.ImageButton emailIB = new ImageButton();
+                    emailIB.ImageUrl = emailIconLocation;
+                    emailIB.ToolTip = "EMail/Share this Item";
+                    emailIB.Click += new ImageClickEventHandler(emailIB_Click);
+                    emailIB.ImageAlign = ImageAlign.AbsMiddle;
+                    emailIB.Attributes.Add("IID", item.IID.ToString());
+
+
+                    ItemDiv.Controls.Add(emailIB);
+                    ItemDiv.Controls.Add(new LiteralControl(seperator));
+                }
+            }
+
+
+            LinkButton commentsLB = new LinkButton();
+            commentsLB.Click += new EventHandler(commentsLB_Click);
+
+            commentsLB.ID = "c" + item.IID.ToString();
+            commentsLB.CssClass = "CSS_Comments";
+            
+            commentsLB.Attributes.Add("IID", item.IID.ToString());
+
+            if (item.NComments > 0)
+            {
+                commentString = item.NComments == 1 ? (item.NComments.ToString() + " comment") : (item.NComments.ToString() + " comments");
+            }
+            commentsLB.Text = commentString;
+
+            ItemDiv.Controls.Add(commentsLB);
+
+
+            if (engine.IsDebug)
+            {
+                string debugMessage = string.Empty;
+                ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak));
+
+                if (engine.ClickCount.ContainsKey(item.IID))
+                {
+                    debugMessage += "Dict Clicks: " + Convert.ToString(engine.ClickCount[item.IID]) + seperator;
+                }
+
+                
+                string queryString = "SELECT Clicks, NSaved, NEMailed FROM item WHERE IID=" + item.IID.ToString() + ";";
+                MySqlDataReader retList = dbOps.ExecuteReader(queryString);
+
+                if (retList != null && retList.HasRows)
+                {
+                    while (retList.Read())
+                    {
+                        debugMessage += "DB Clicks: " + Convert.ToString(retList["Clicks"]) + seperator
+                            + "NSaved: " + Convert.ToString(retList["NSaved"]) + seperator
+                            + "NEMailed: " + Convert.ToString(retList["NEMailed"]) + seperator;
+                    }
+                    retList.Close();
+                }
+
+
+
+
+                debugMessage += "Age: " + item.Age.ToString() + seperator;
+                debugMessage += "Marks: " + item.Marks.ToString();
+
+                Label debugLabel = new Label();
+                debugLabel.Text = debugMessage;
+                debugLabel.Font.Size = FontUnit.Small;
+                debugLabel.ForeColor = System.Drawing.Color.Gray;
+                ItemDiv.Controls.Add(debugLabel);
+
+
+
+            }
+
+            ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak + gui.LineBreak));
+            ItemDiv.Controls.Add(new LiteralControl(gui.GrayFontStart + gui.ItemSeperator + gui.GrayFontEnd));
+            ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak));
+
+        }   //  itemList Loop Ends.
+
+        //  Add the "Previous" Link if required.
+        if (startItem - engine.ItemsPerPage >= 0)
+        {
+
+            int previousItem = startItem - engine.ItemsPerPage;
+
+            LinkButton previousPageLB = new LinkButton();
+            previousPageLB.Click += new EventHandler(previousPageLB_Click);
+            previousPageLB.Text = "Previous";
+            previousPageLB.CssClass = "CSS_Next";
+
+            previousPageLB.Attributes.Add("link", links.NewestPageLink + "?startItem=" + previousItem.ToString());
+
+            ItemDiv.Controls.Add(previousPageLB);
+
+
+        }
+
+        //  Add the "Next" Link if required.
+        if (startItem + engine.ItemsPerPage < itemList.Count)
+        {
+            if (startItem - engine.ItemsPerPage >= 0)
+            {
+                ItemDiv.Controls.Add(new LiteralControl(seperator));
+            }
+
+            int nextItem = startItem + engine.ItemsPerPage;
+
+            LinkButton nextPageLB = new LinkButton();
+            nextPageLB.Click += new EventHandler(nextPageLB_Click);
+            nextPageLB.Text = "Next";
+            nextPageLB.CssClass = "CSS_Next";
+
+            nextPageLB.Attributes.Add("link", links.NewestPageLink + "?startItem=" + nextItem.ToString());
+
+            ItemDiv.Controls.Add(nextPageLB);
+        }
+
+        ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak));
+        ItemDiv.Controls.Add(new LiteralControl(gui.LineBreak));
+    }
+
+
+    void linkItemLB_Click(object sender, EventArgs e)
+    {
+        LinkButton itemLB = (LinkButton)sender;
+       
+        //  string iidStr = itemLB.ID;
+        string iidStr = itemLB.Attributes["IID"];
+
+        int iid = int.Parse(iidStr);
+        if (engine.ClickCount.ContainsKey(iid))
+        {
+            engine.ClickCount[iid] = engine.ClickCount[iid] + 1;
+        }
+        else
+        {
+            engine.ClickCount.Add(iid, 1);
+        }
+
+
+        string link = Convert.ToString(itemLB.Attributes["link"]);
+        Response.Redirect(link, false);
+        //  Response.Write("Item: " + iid + " Clicks: " + itemClicks.ToString());
+
+    }
+
+    void textItemLB_Click(object sender, EventArgs e)
+    {
+        LinkButton itemLB = (LinkButton)sender;
+        
+        //  string iidStr = itemLB.ID;
+        string iidStr = itemLB.Attributes["IID"];
+
+        int iid = int.Parse(iidStr);
+        if (engine.ClickCount.ContainsKey(iid))
+        {
+            engine.ClickCount[iid] = engine.ClickCount[iid] + 1;
+        }
+        else
+        {
+            engine.ClickCount.Add(iid, 1);
+        }
+
+        //  Response.Write("Item: " + iid + " Clicks: " + itemClicks.ToString());
+        Response.Redirect(links.ItemDetailsPageLink + "?IID=" + iid.ToString(), false);
+
+    }
+
+
+    void userLB_Click(object sender, EventArgs e)
+    {
+        LinkButton userLB = (LinkButton)sender;
+        
+        string uid = userLB.Text;
+
+        //  Response.Write("User: " + uid);
+        Response.Redirect(links.UserDetailsPageLink + "?UID=" + uid, false);
+    }
+
+    void categoryLB_Click(object sender, EventArgs e)
+    {
+        LinkButton categoryLB = (LinkButton)sender;
+
+        Response.Redirect(links.CategoryPageLink + "?category=" + categoryLB.Attributes["category"], false);
+
+
+    }
+
+    void saveLB_Click(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(UID)) //  Show the Saved link only if the User is logged in.
+        {
+            LinkButton saveLB = (LinkButton)sender;
+            saveLB.Text = "saved";
+            saveLB.Enabled = false;
+            saveLB.CssClass = "CSS_AfterSave";
+            //saveLB.Font.Underline = false;
+            //saveLB.Font.Size = FontUnit.Small;
+            //saveLB.ForeColor = System.Drawing.Color.Gray;
+            string IID = saveLB.Attributes["IID"];
+
+            string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string queryString = "INSERT INTO saveditems VALUES ('" + UID + "' , " + IID + " , '" + date + "');";
+            int retInt = dbOps.ExecuteNonQuery(queryString);
+
+            //  Also update the getputs.item NSaved Field.
+            queryString = "UPDATE item SET NSaved=NSaved+1 WHERE IID=" + IID + ";";
+            retInt = dbOps.ExecuteNonQuery(queryString);
+
+            Response.Redirect(Context.Request.Url.ToString());
+        }
+
+    }
+
+    void emailIB_Click(object sender, EventArgs e)
+    {
+        ImageButton emailIB = (ImageButton)sender;
+        string iidStr = Convert.ToString(emailIB.Attributes["IID"]);
+
+        int iid = int.Parse(iidStr);
+        Response.Redirect(links.SendItemMailPageLink + "?IID=" + iid.ToString(), false);
+    }
+
+    void commentsLB_Click(object sender, EventArgs e)
+    {
+        LinkButton commentsLB = (LinkButton)sender;
+        string iidStr = Convert.ToString(commentsLB.Attributes["IID"]);
+
+        int iid = int.Parse(iidStr);
+        if (engine.ClickCount.ContainsKey(iid))
+        {
+            engine.ClickCount[iid] = engine.ClickCount[iid] + 1;
+        }
+        else
+        {
+            engine.ClickCount.Add(iid, 1);
+        }
+
+        Response.Redirect(links.ItemDetailsPageLink + "?IID=" + iid.ToString(), false);
+    }
+
+    void previousPageLB_Click(object sender, EventArgs e)
+    {
+        LinkButton previousPageLB = (LinkButton)sender;
+        string link = Convert.ToString(previousPageLB.Attributes["link"]);
+        Response.Redirect(link, false);
+
+    }
+
+    void nextPageLB_Click(object sender, EventArgs e)
+    {
+        LinkButton nextPageLB = (LinkButton)sender;
+        string link = Convert.ToString(nextPageLB.Attributes["link"]);
+        Response.Redirect(link, false);
+
+    }
+
+    
+
+}

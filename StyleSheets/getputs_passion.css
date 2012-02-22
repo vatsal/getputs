@@ -1,0 +1,554 @@
+﻿/*
+//  Owner: Vatsal Shah
+//  Product: getputs.com
+//  Copyright Notice: Copyright Protected. All Rights Reserved.
+*/
+
+/*
+	getputs CSS File.
+	getputs_A.css supports the Black/White Theme.
+*/
+
+body 
+{
+	
+}
+
+/*
+a:link 
+{ 
+	font-family: Verdana;
+	text-decoration:none; 
+}
+
+a:visited 
+{ 
+	font-family: Verdana;
+	color: Gray; 
+	text-decoration:line-through; 
+}
+*/
+
+
+.CSS_MasterBody
+{
+	border-style:none;
+    background-color:Black;
+    /*
+    padding-left:65px;
+    padding-right:65px;
+	*/    
+	
+	margin-left:auto;
+	margin-right:auto;
+	width:88%;
+}
+
+.CSS_TopUpdateTable
+{	
+	height:16px;
+	font:normal 12px Verdana;
+	border-style:none;
+	
+	/* 
+	background-color:#dfe4ee;
+	color:Black;
+	*/
+	 
+	background-color:Gray;
+	color:White;
+		
+	
+	/*
+	background-color:Black;
+	color:White;
+	*/
+}
+
+.CSS_SetAsHomePageLink
+{
+	font-size:smaller;
+	font-family:Verdana;
+	text-decoration:none; 
+	color:White;
+}
+
+.CSS_Text
+{
+	color: White;
+}
+
+/* About Page Starts */
+.CSS_Question
+{
+	font-family:Verdana;
+	font-size: medium;	
+	color: Blue;
+	text-decoration: none;	
+}
+
+.CSS_Answer
+{
+	font-family:Verdana;
+	font-size: medium;	
+	color: Gray;
+	text-decoration: none;	
+}
+/* About Page Ends */
+
+
+.CSS_ColorTheme
+{
+	font-family:Verdana;
+	font-size:smaller;	
+	color: White;
+	text-decoration: none;	
+	background-color:Black;	
+}
+
+
+.CSS_NavigationTableLinkButtons
+{	
+	font-family:Verdana;	
+	/*color: Blue;*/
+	color: White;	
+	
+	font-size:108%;
+	line-height: 22px;
+	font-weight:300;
+	text-decoration: none;
+	padding: 5px 2px 5px 2px;
+}
+
+.CSS_NavigationTableHyperLinks
+{	
+	font-family:Verdana;
+	/* color: Blue; */
+	color: Black;
+
+	font-size:108%;
+	line-height: 22px;
+	font-weight:300;
+	text-decoration: none;
+	padding: 5px 2px 5px 2px;
+}
+
+.CSS_SubmitLink
+{
+	color: White;
+	font-family: Verdana;	
+	font-size:Larger;
+	text-decoration:none;
+	text-align:center;
+	font-weight:400;
+	background-color:RoyalBlue;	
+	 
+}
+
+
+.CSS_LinkItem
+{	
+	/*color: Blue;*/
+	color: White;	
+	font-family: Verdana;
+	text-decoration: none;	
+	font-weight: bold;
+}
+
+
+
+.CSS_ItemDomain
+{
+	color: DarkGray;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;	
+}
+
+.CSS_TextItem
+{
+	color: White;
+	font-family: Verdana;
+	text-decoration: none;	
+}
+
+.CSS_ItemTextDetails
+{
+	color: Gray;
+	font-family: Verdana;
+	text-decoration: none;		
+}
+
+
+.CSS_ItemImage
+{
+	height: 100px;
+	width: 100px;
+}
+
+
+.CSS_Submitter
+{
+	color: Lime;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;	
+}
+
+.CSS_SubmissionFreshness
+{
+	color: Gray;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;	
+}
+
+.CSS_Category
+{
+	/*color: Black;*/
+	/* color: Orange; */
+	color: White;
+	/*color:Gray;*/
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;	
+}
+
+.CSS_EMailLink
+{
+	color: White;
+	font-family: Verdana;
+	text-decoration: none;
+	font-size:smaller;
+	vertical-align:bottom;
+	
+}
+
+.CSS_Comments
+{
+	color: Lime;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;	
+}
+
+.CSS_CommentsEdit
+{
+	color: Green;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;		
+}
+
+.CSS_CommentsDelete
+{
+	color: Orange;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;
+}
+
+.CSS_Save
+{
+	/*color: Black;*/
+	color: Green;
+	/*color: Orange;*/
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;
+}
+
+.CSS_AfterSave
+{
+	color: Gray;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:smaller;
+}
+
+.CSS_TagLinkItem
+{	
+	/*color: Black;*/
+	color: White;
+	font-family: Verdana;
+	text-decoration: none;
+	background-color:Gray;
+	
+}
+
+.CSS_Next
+{
+	color: Green;
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium;
+}
+
+.CSS_Visited
+{
+	color: Gray;
+	font-family: Verdana;
+	text-decoration: none;	
+}
+
+span    
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium;
+	color: White;
+}
+
+
+/*
+input[type=\"submit\"] 
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium;
+	border-style:solid;
+	background-color:Gray;
+	 
+}
+
+input[type=\"text\"] 
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium;
+}
+*/
+
+/*
+input
+{
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium;
+}
+*/
+
+input[type='submit'] 
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	/* font-size:Medium; */
+	font-size:larger;
+	border-style:none;
+	background-color:RoyalBlue;
+	color:White;
+	 
+	 
+}
+
+
+textarea 
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium; 
+}
+
+select 
+{ 
+	font-family: Verdana;
+	text-decoration: none;	
+	font-size:Medium; 
+}
+
+
+table
+{	
+	/* border: Medium Solid GainsBoro; */
+	border: Medium Solid #dfe4ee;	
+	font-family:Verdana;
+}
+
+.CSS_CategoryDiv
+{
+	/* border: Medium Solid GainsBoro; */
+	border: Medium Solid #dfe4ee;		
+	width:170px;
+}
+
+
+.NoDesign
+{
+	border-style:none;	
+}
+
+.rating 
+{
+	border-style:none;	
+	width:auto;
+	background-color:Black;
+	vertical-align:middle;
+		
+}
+
+
+.AdSpan
+{
+	border-style: none;	
+}
+
+/*  Code for Showing and Hiding ItemDetails in the 3rd Layout (Categorized). */
+.CSS_HideIt
+{
+	display: none;
+}
+
+
+/*
+#NavigationTable td:hover
+{ 
+	 background-color:#dcdcdc;	 
+}
+
+
+.CSS_NavigationTableLinkButtons:hover
+{	
+	background-color:#dcdcdc;
+	font-family:Verdana;
+	font-size: medium;	
+	color: Blue;
+	text-decoration: none;		
+}
+*/
+
+/*
+.CSS_NavigationTableLinkButtons a:link, CSS_NavigationTableLinkButtons a:visited
+{
+	  color:Green;
+}
+*/
+
+
+
+/* =================================================================== */
+/* CAROUSEL
+/* =================================================================== */
+
+
+/*
+Standard Configuration. 
+It is advised that this section NOT be modified as the carousel.js expects the behavior outlined below.
+*/
+.carousel-component 
+{ 
+	position:relative;
+	overflow:hidden;   /* causes the clipping */
+	display:none; /* component turns it on when first item is rendered */
+	
+}
+				
+.carousel-component ul.carousel-list 
+{ 
+	width:10000000px;
+	position:relative;
+	z-index:1; 
+}
+
+.carousel-component .carousel-list li 
+{ 
+	float:left;
+	list-style:none;
+	overflow:hidden;
+	    
+}
+
+/* VERTICAL CAROUSEL DEFAULTS */
+.carousel-component .carousel-vertical li 
+{ 
+	margin-bottom:0px;
+
+	/* Fix for extra spacing in IE */
+	float:left;
+    clear:left;  
+	
+	/* Force the LI to respect the HEIGHT specified */
+	overflow:hidden;
+	display:block;
+}
+
+/* 
+For vertical carousel, not set, width defaults to auto 
+Note if you explicitly set width to auto, this might cause
+problems with Safari... as in up/down button not working in some examples.
+*/	 
+.carousel-component ul.carousel-vertical 
+{
+
+}
+
+.carousel-component .carousel-clip-region 
+{ 
+	overflow:hidden; /* Secret to the clipping */
+	margin:0px auto;
+	position:relative; 
+}
+
+/*
+==============================================================================
+Safe to override. 
+It is safe to override 
+background, padding, margin, color, text alignment, fonts, etc. 
+Define a separate CSS file and override your style preferences.
+==============================================================================
+*/
+
+.carousel-component 
+{
+		
+	padding:0px;
+	-moz-border-radius:0px;
+		
+	background-color:Black;
+	border-style: solid;
+	border: Medium Solid #dfe4ee;
+	
+}
+.carousel-component ul.carousel-list 
+{ 	
+
+	margin:0px;
+	
+	
+	/* padding:0px; */
+	padding:1px; /* for some reason, this is needed for IE6 & 7 */ 
+	
+	/* line-height:1; */
+	
+}
+.carousel-component .carousel-list li 
+{	
+	text-align: left;
+	vertical-align:top;
+	margin:0px;
+	padding:0px;	
+		
+	/* width: 500px; */
+	width: 750px;	
+}
+
+.carousel-component .carousel-clip-region 
+{		
+	
+}
+
+.carousel-component .carousel-vertical li 
+{ 
+}
+.carousel-component ul.carousel-vertical 
+{
+}
+
+#dhtml-carousel 
+{
+    padding:0px;
+    margin:0px;
+    float:left;
+    /* width:auto;*/
+    
+    /* this would fix IE alignment --> padding-right:20px; */
+}
